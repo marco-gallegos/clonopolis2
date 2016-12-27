@@ -25,8 +25,8 @@ $(document).ready(function(){
   //para insertar
   $(".container").on("click",".btn-insert",function(){
     var datos = {};
-    //var direccion = "php/insert/" + this.id + ".php";
-    var direccion = "php/insert/" + "insert-pelicula.php";
+    var direccion = "php/insert/" + this.id + ".php";
+    //var direccion = "php/insert/" + www"insert-pelicula.php";
 
     var fr = document.forms[0].elements;
     for (var i = 1; i <= fr.length; i++)
@@ -36,7 +36,7 @@ $(document).ready(function(){
       //console.log(elem + nu);
       datos[i] = elem;
     }
-    datos["tabla"] = $("#nom_tabla").text().toLowerCase();
+    //datos["tabla"] = $("#nom_tabla").text().toLowerCase();
 
     $.ajax(
       {
