@@ -1,1 +1,1 @@
-# interfaz para una base de datos
+# Interfaz para una base de datos

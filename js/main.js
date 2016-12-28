@@ -4,14 +4,13 @@ function cargar_vista_en_container(url)
     {
       url : url,
       dataType : "html",
-      error : function()
-      {
+      error : function(){
         console.log("error de ejecucion");
       }
     }).done(function(response){
       $(".container").empty();
       $(".container").append(response);
-    });
+  });
 }
 
 $(document).ready(function(){
@@ -23,11 +22,15 @@ $(document).ready(function(){
   });
 
   //para insertar
-  $(".container").on("click",".btn-insert",function(){
+  $(".container").on("click",".btn-insert , .btn-update",function(){
     var datos = {};
-    var direccion = "php/insert/" + this.id + ".php";
-    //var direccion = "php/insert/" + www"insert-pelicula.php";
-
+    if(this.id.match("update[-]?[a-z]*")){
+      var direccion = "php/update/" + this.id + ".php";
+      console.log("update");
+    }
+    else{
+      var direccion = "php/insert/" + this.id + ".php";
+    }
     var fr = document.forms[0].elements;
     for (var i = 1; i <= fr.length; i++)
     {
@@ -37,6 +40,22 @@ $(document).ready(function(){
       datos[i] = elem;
     }
     //datos["tabla"] = $("#nom_tabla").text().toLowerCase();
+    $.ajax({
+        method : "POST",
+        url : direccion,
+        data : datos,
+        dataType : "json",
+        error:function(bad_response){
+          $("#status_box").text("error ----> " + bad_response);
+        }
+    }).done(function(response){
+      $("#status_box").text(response);
+      });
+  });
+
+  $(".container").on("click",".btn-buscar",function(){
+    var direccion = "php/select/" + this.id + ".php";
+    var datos = {}; datos[1] = $("#1").val();
     $.ajax(
       {
         method : "POST",
@@ -45,29 +64,13 @@ $(document).ready(function(){
         dataType : "json",
         error:function(bad_response){
           $("#status_box").text("error ----> " + bad_response);
-        }}).done(function(response){
-          $("#status_box").text(response);
+        }
+      }
+    ).done(function(response){
+        response[0].forEach(function(element,index,array){
+          $("#"+(index+1)).val(element);
         });
       });
-
-      $(".container").on("click",".btn-buscar",function(){
-        var direccion = "php/select/" + this.id + ".php";
-        var datos = {}; datos[1] = $("#1").val();
-        $.ajax(
-          {
-            method : "POST",
-            url : direccion,
-            data : datos,
-            dataType : "json",
-            error:function(bad_response){
-              $("#status_box").text("error ----> " + bad_response);
-            }}).done(function(response){
-
-              response[0].forEach(function(element,index,array){
-                $("#"+(index+1)).val(element);
-            });
-            });
-
-          });
+  });
 
 });
