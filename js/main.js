@@ -37,7 +37,6 @@ $(document).ready(function(){
       datos[i] = elem;
     }
     //datos["tabla"] = $("#nom_tabla").text().toLowerCase();
-
     $.ajax(
       {
         method : "POST",
@@ -49,7 +48,26 @@ $(document).ready(function(){
         }}).done(function(response){
           $("#status_box").text(response);
         });
+      });
 
-  });
+      $(".container").on("click",".btn-buscar",function(){
+        var direccion = "php/select/" + this.id + ".php";
+        var datos = {}; datos[1] = $("#1").val();
+        $.ajax(
+          {
+            method : "POST",
+            url : direccion,
+            data : datos,
+            dataType : "json",
+            error:function(bad_response){
+              $("#status_box").text("error ----> " + bad_response);
+            }}).done(function(response){
+
+              response[0].forEach(function(element,index,array){
+                $("#"+(index+1)).val(element);
+            });
+            });
+
+          });
 
 });
