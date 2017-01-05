@@ -53,9 +53,13 @@ $(document).ready(function(){
       });
   });
 
-  $(".container").on("click",".btn-buscar",function(){
+  $(".container").on("click",".btn-buscar, .btn-buscar-all",function(){
     var direccion = "php/select/" + this.id + ".php";
-    var datos = {}; datos[1] = $("#1").val();
+    var datos = {};
+    if (this.id.match()) {
+      
+    }
+    datos[1] = $("#1").val();
     $.ajax(
       {
         method : "POST",
