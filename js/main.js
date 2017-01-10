@@ -57,7 +57,7 @@ $(document).ready(function(){
     var direccion = "php/select/" + this.id + ".php";
     var datos = {};
     if (this.id.match()) {
-      
+
     }
     datos[1] = $("#1").val();
     $.ajax(
