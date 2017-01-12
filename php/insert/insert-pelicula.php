@@ -27,7 +27,7 @@ try {
 
   //version anterior
   //$sql->execute(array(':1' => $_POST[2], ':2' => $_POST[3], ':3' => $_POST[4], ':4' => $_POST[5], ':5' => $_POST[6], ':6' => $_POST[7], ':7' => $_POST[8]));
-
+  //se deben pasar en ordent
   $sql->execute(array($_POST[2], $_POST[3], $_POST[4], $_POST[5], $_POST[6], $_POST[7], $_POST[8]));
 
   $res = json_encode("estado : 'todo bien'");

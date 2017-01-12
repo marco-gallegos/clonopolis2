@@ -3,10 +3,7 @@ function cargar_vista_en_container(url)
   $.ajax(
     {
       url : url,
-      dataType : "html",
-      error : function(){
-        console.log("error de ejecucion");
-      }
+      dataType : "html"
     }).done(function(response){
       $(".container").empty();
       $(".container").append(response);
@@ -14,6 +11,13 @@ function cargar_vista_en_container(url)
 }
 
 $(document).ready(function(){
+
+  $("#logoff").click(function(event){
+    event.preventDefault();
+    $.post("php/logoff.php").done(function(response){
+      console.log("sesion terminada ");
+    });
+  });
 
   $(".cargar-vista").click(function(event){
     event.preventDefault();
@@ -56,8 +60,9 @@ $(document).ready(function(){
   $(".container").on("click",".btn-buscar, .btn-buscar-all",function(){
     var direccion = "php/select/" + this.id + ".php";
     var datos = {};
-    if (this.id.match()) {
-
+    if (this.classList.contains("btn-buscar-all")) {
+      direccion = "php/select/select-pelicula.php";
+      datos["todos"] = 1;
     }
     datos[1] = $("#1").val();
     $.ajax(
@@ -71,10 +76,36 @@ $(document).ready(function(){
         }
       }
     ).done(function(response){
+      switch (response.estado) {
+        case "no user o pas" :
+          return;
+          break;
+        default:
+
+      }
+      if (response.length > 1) {
+        $(".table").empty();
+        var estructura_tabla = '<thead><tr class="info"><td>id</td><td>nombre</td><td>duracion</td><td>clasificacion</td><td>fecha estreno</td><td>idioma</td><td>genero</td><td>sinopsis</td></tr></thead> <tbody>';
+        $(".tabla_resultados").append(estructura_tabla);
+        for (var i = 0; i < response.length; i++) {
+
+          var res = "<tr>";
+          var count = Object.keys(response[i]).length;
+          for (var j = 0; j < count; j++) {
+            res += "<td> " + response[i][j] + "</td>";
+          }
+          res += "</tr>";
+          //console.log(res);
+          $(".tabla_resultados").append(res);
+        }
+        $(".tabla_resultados").append("</tbody>");
+
+      }else {
         response[0].forEach(function(element,index,array){
           $("#"+(index+1)).val(element);
         });
-      });
+      }
+    });
   });
 
 });
